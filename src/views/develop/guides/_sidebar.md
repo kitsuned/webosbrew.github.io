@@ -12,6 +12,7 @@
       * [Networking](/develop/guides/native/net)
     * Startup Script
     * System Mods
+    * [appinfo.json](/develop/guides/appinfo)
 * :bi-bug:Debugging
     * Inspecting Web App
     * GDB
