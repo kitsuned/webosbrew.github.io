@@ -116,6 +116,12 @@ Default: `false`
 This option allows application to receive all mouse button events. Since webOS 25 (10.x), right mouse button click will
 bring up a pop-up menu with BACK and HOME actions. Setting this option to `true` will disable this behavior.
 
+### `useAllKeyboardKeys` [boolean]
+
+Default: ???
+
+Unknown yet. But might be interesting for applications that use keyboard input.
+
 ### `vendorExtensions` [object]
 
 #### `vendorExtensions.userAgent` [string]
