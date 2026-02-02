@@ -1,0 +1,50 @@
+name: Update package-lock for caniroot
+
+on:
+  schedule:
+    # Every 3 days at 03:17 UTC
+    - cron: "17 3 */3 * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: caniroot-update
+  cancel-in-progress: true
+
+jobs:
+  update-lock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Update lockfile for caniroot
+        run: |
+          npm install --package-lock-only github:webosbrew/caniroot#main
+
+      - name: Check if package-lock.json changed
+        id: diff
+        run: |
+          if git diff --quiet -- package-lock.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push if changed
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add package-lock.json
+          git commit -m "chore: update caniroot git dependency"
+          git push
